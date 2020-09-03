@@ -1,5 +1,5 @@
 using NUnit.Framework;
-
+using System;
 
 namespace Calculator.Test.Unit
 {
@@ -103,6 +103,17 @@ namespace Calculator.Test.Unit
         public void Power_PowerOf9To0point5_Returns3()
         {
             Assert.That(_calculator.Power(9, 0.5), Is.EqualTo(3));
+        }
+
+        [Test]
+        public void Divide_DivisionBy0OnAccumulator_ThrowsArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => _calculator.Divide(0));
+        }
+        [Test]
+        public void Divide_DivisionBy0TwoParameters_ThrowsArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => _calculator.Divide(10,0));
         }
     }
 }
