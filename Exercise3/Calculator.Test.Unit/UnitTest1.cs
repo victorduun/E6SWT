@@ -48,6 +48,26 @@ namespace Calculator.Test.Unit
             Assert.That(_calculator.Add(par1, par2), Is.EqualTo(result));
         }
 
+        //Testcase for exercise 5(Optional)
+        [TestCase(1, 1, 1, 1, 1, 5)]
+        [TestCase(10, 9, 1, 5, 2, 27)]
+        [TestCase(10, -10, 10, -10, 0, 0)]
+        public void Add_SumOfParametersAccumulator_ReturnsCorrectSum(double add1, double add2, double add3, double add4, double add5, double result)
+        {
+            _calculator.Add(add1);
+            _calculator.Add(add2);
+            _calculator.Add(add3);
+            _calculator.Add(add4);
+            _calculator.Add(add5);
+            Assert.That(_calculator.Accumulator, Is.EqualTo(result));
+        }
+        
+        [Test]
+        public void Add_AddToAccumulator_ReturnsCorrectSum()
+        {
+            Assert.That(_calculator.Add(10), Is.EqualTo(10));
+        }
+
         [Test]
         public void Add_SumOf2Plus2_Returns4()
         {
