@@ -83,13 +83,24 @@ namespace Calculator.Test.Unit
             Assert.That(_calculator.Add(2, -8), Is.EqualTo(-6));
         }
 
+        /* Test cases for Subtract */
 
         [Test]
-        public void Add_DifferenceBetween30And15_Returns15()
+        public void Subtract_DifferenceBetween30And15_Returns15()
         {
             Assert.That(_calculator.Subtract(30, 15), Is.EqualTo(15));
         }
 
+        [Test]
+        public void Subtract_DifferenceBetween50And0_Returns50()
+        {
+            Assert.That(_calculator.Subtract(50, 0), Is.EqualTo(50));
+        }
+        [Test]
+        public void Subtract_DifferenceBetween10000And10001_ReturnsMinus1()
+        {
+            Assert.That(_calculator.Subtract(10000, 10001), Is.EqualTo(-1));
+        }
 
         /* Test cases for Multiply */
 
