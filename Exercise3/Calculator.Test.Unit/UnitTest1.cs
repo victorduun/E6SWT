@@ -10,7 +10,7 @@ namespace Calculator.Test.Unit
          * 
          * ==== Exercise 4 ====
          * 
-         * Extensibility: I would argue that it is easier to extend unit tests by using a unit test framework such as NUnit, because all
+         * Extensibility: We would argue that it is easier to extend unit tests by using a unit test framework such as NUnit, because all
          * that is required when adding one or more unit tests in the form of functions in order to test a new feature of a class.
          * 
          * Maintainability:
@@ -36,6 +36,9 @@ namespace Calculator.Test.Unit
         {
             _calculator = new Exercise3.Calculator();
         }
+
+
+        /* Test cases for add */
 
         //Testcase for exercise 5(Optional)
         [TestCase(4, 4, 8)]
@@ -88,6 +91,15 @@ namespace Calculator.Test.Unit
         }
 
 
+        /* Test cases for Multiply */
+
+
+        [Test]
+        public void Multiply_ProductOf10And0_Returns0()
+        {
+            Assert.That(_calculator.Multiply(10, 0), Is.EqualTo(0));
+        }
+
         [Test]
         public void Multiply_ProductOf10And10_Returns100()
         {
@@ -95,16 +107,36 @@ namespace Calculator.Test.Unit
         }
 
         [Test]
+        public void Multiply_ProductOf10AndMinus10_ReturnsMinus100()
+        {
+            Assert.That(_calculator.Multiply(10, -10), Is.EqualTo(-100));
+        }
+
+
+        /* Test cases for Power */
+
+
+        [Test]
         public void Power_PowerOf10To3_Returns1000()
         {
             Assert.That(_calculator.Power(10, 3), Is.EqualTo(1000));
         }
+
         [Test]
         public void Power_PowerOf9To0point5_Returns3()
         {
             Assert.That(_calculator.Power(9, 0.5), Is.EqualTo(3));
         }
 
+        [Test]
+        public void Power_PowerOfMinus2To5_ReturnsMinus32()
+        {
+            Assert.That(_calculator.Power(-2, 5), Is.EqualTo(-32));
+        }
+
+
+
+        /* Test cases for Divide */
         [Test]
         public void Divide_DivisionBy0OnAccumulator_ThrowsArgumentException()
         {
@@ -115,5 +147,40 @@ namespace Calculator.Test.Unit
         {
             Assert.Throws<ArgumentException>(() => _calculator.Divide(10,0));
         }
+        [Test]
+        public void Divide_DivisionByTwoParameters_ThrowsArgumentException()
+        {
+            Assert.That(_calculator.Divide(10, 10), Is.EqualTo(1));
+        }
+
+
+
+        /* Test cases for Clear */
+
+        [Test]
+        public void Clear_SetsAccumulatorTo0AfterAddition_AccumulatorIs0()
+        {
+            _calculator.Add(40); // Accumulator should now be different from 0
+            _calculator.Clear();
+            Assert.That(_calculator.Accumulator,Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Clear_SetsAccumulatorTo0AfterMultiplication_AccumulatorIs0()
+        {
+            _calculator.Multiply(10,10); // Accumulator should now be different from 0
+            _calculator.Clear();
+            Assert.That(_calculator.Accumulator, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Clear_SetsAccumulatorTo0AfterDivision_AccumulatorIs0()
+        {
+            _calculator.Divide(10, 2); // Accumulator should now be different from 0
+            _calculator.Clear();
+            Assert.That(_calculator.Accumulator, Is.EqualTo(0));
+        }
+
+
     }
 }
