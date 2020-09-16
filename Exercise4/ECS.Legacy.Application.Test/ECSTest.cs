@@ -10,13 +10,15 @@ namespace ECS.Legacy.Application.Test
         const int InitializeThreshold = 30;
         FakeHeater _fakeheater;
         FakeTempSensor _faketempSen;
+        FakeWindow _fakeWindow;
         [SetUp]
         public void Setup()
         {
             _fakeheater = new FakeHeater();
             _faketempSen = new FakeTempSensor(FakeTempSensorValue);
+            _fakeWindow = new FakeWindow();
             FakeRandomNumberGenerator _fakerandomnumbergenerator = new FakeRandomNumberGenerator();
-            _ecs = new ECS(_fakeheater, _faketempSen, InitializeThreshold);
+            _ecs = new ECS(_fakeheater, _faketempSen, _fakeWindow, InitializeThreshold);
         }
 
         [Test]
@@ -52,6 +54,11 @@ namespace ECS.Legacy.Application.Test
             Assert.That(_fakeheater.IsOn, Is.False);
         }
 
-
+        [Test]
+        public void Regulate_TemperatureBelowThreshold_WindowIsClosed()
+        {
+            _ecs.Regulate();
+            Assert.That(_fakeWindow.IsOpen, Is.False);
+        }
     }
 }   

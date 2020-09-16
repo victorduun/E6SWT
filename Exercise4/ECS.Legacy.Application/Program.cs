@@ -12,9 +12,8 @@ namespace ECS.Legacy.Application
             IHeater heater = new Heater();
             IRandomNumberGenerator rng = new RandomNumberGenerator();
             ITempSensor tempSensor = new TempSensor(rng);
-            ECS ecs = new ECS(heater, tempSensor, 3);
-
-
+            IWindow window = new Window();
+            ECS ecs = new ECS(heater, tempSensor, window, 3);
 
         }
 

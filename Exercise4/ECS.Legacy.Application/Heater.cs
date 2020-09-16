@@ -1,6 +1,6 @@
 ﻿using ECS.Legacy.Application;
 
-namespace ECS.Legacy
+namespace ECS.Legacy.Application
 {
     public class Heater : IHeater
     {

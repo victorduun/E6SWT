@@ -1,6 +1,0 @@
-﻿
-#Exercise 2: Reverse engineering the legacy ECS solution
-#Identify dependencies: Class Heater, Class TempSensor
-
-Exercise 3: Implement the refactored design
-Exercise 3.1: Make IHeater, ITempSensor, IRandom private 
