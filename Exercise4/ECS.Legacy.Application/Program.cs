@@ -13,7 +13,7 @@ namespace ECS.Legacy.Application
             IRandomNumberGenerator rng = new RandomNumberGenerator();
             ITempSensor tempSensor = new TempSensor(rng);
             IWindow window = new Window();
-            ECS ecs = new ECS(heater, tempSensor, window, 3);
+            ECS ecs = new ECS(heater, tempSensor, window, 3, 10);
 
         }
 

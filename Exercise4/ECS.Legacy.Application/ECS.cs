@@ -4,14 +4,18 @@
 {
     public class ECS
     {
-        private int _threshold;
+        private int _heaterTempThreshold;
+        private int _windowTempThreshold;
         private readonly ITempSensor _tempSensor;
         private readonly IHeater _heater;
         private readonly IWindow _window;
 
-        public ECS(IHeater heater, ITempSensor tempSensor, IWindow window, int thr)
+
+
+        public ECS(IHeater heater, ITempSensor tempSensor, IWindow window, int heaterThreshold, int windowThreshold)
         {
-            SetThreshold(thr);
+            SetHeaterThreshold(heaterThreshold);
+            SetWindowThreshold(windowThreshold);
             _tempSensor = tempSensor;
             _heater = heater;
             _window = window;
@@ -19,27 +23,63 @@
 
         public void Regulate()
         {
-            var t = _tempSensor.GetTemp();
-            if (t < _threshold)
+            bool isHeaterOn = RegulateHeater();
+            if (isHeaterOn)
             {
-                _heater.TurnOn();
                 _window.CloseWindow();
             }
             else
             {
+                RegulateWindow();
+            }
+        }
+        private bool RegulateHeater()
+        {
+            var t = _tempSensor.GetTemp();
+            if (t < _heaterTempThreshold)
+            {
+                _heater.TurnOn();
+                return true;
+            }
+            else
+            {
                 _heater.TurnOff();
-                _window.OpenWindow();
+                return false;
             }
         }
 
-        public void SetThreshold(int thr)
+        private bool RegulateWindow()
         {
-            _threshold = thr;
+            var t = _tempSensor.GetTemp();
+            if (t <= _windowTempThreshold)
+            {
+                _window.CloseWindow();
+                return false;
+            }
+            else
+            {
+                _window.OpenWindow();
+                return true;
+            }
         }
 
-        public int GetThreshold()
+        public void SetHeaterThreshold(int thr)
         {
-            return _threshold;
+            _heaterTempThreshold = thr;
+        }
+
+        public void SetWindowThreshold(int thr)
+        {
+            _windowTempThreshold = thr;
+        }
+
+        public int GetHeaterThreshold()
+        {
+            return _heaterTempThreshold;
+        }
+        public int GetWindowThreshold()
+        {
+            return _windowTempThreshold;
         }
 
         public int GetCurTemp()

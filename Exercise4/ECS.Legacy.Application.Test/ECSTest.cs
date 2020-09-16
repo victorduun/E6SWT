@@ -6,8 +6,10 @@ namespace ECS.Legacy.Application.Test
     {
         ECS _ecs;
 
+        //Values are initialized such that temperature sensor returns values below the thresholds
         const int FakeTempSensorValue = 10;
-        const int InitializeThreshold = 30;
+        const int InitializeHeaterThreshold = 30;
+        const int InitializeWindowThreshold = 35;
         FakeHeater _fakeheater;
         FakeTempSensor _faketempSen;
         FakeWindow _fakeWindow;
@@ -17,8 +19,7 @@ namespace ECS.Legacy.Application.Test
             _fakeheater = new FakeHeater();
             _faketempSen = new FakeTempSensor(FakeTempSensorValue);
             _fakeWindow = new FakeWindow();
-            FakeRandomNumberGenerator _fakerandomnumbergenerator = new FakeRandomNumberGenerator();
-            _ecs = new ECS(_fakeheater, _faketempSen, _fakeWindow, InitializeThreshold);
+            _ecs = new ECS(_fakeheater, _faketempSen, _fakeWindow, InitializeHeaterThreshold, InitializeWindowThreshold);
         }
 
         [Test]
@@ -27,27 +28,40 @@ namespace ECS.Legacy.Application.Test
             Assert.That(_ecs.GetCurTemp(), Is.EqualTo(FakeTempSensorValue));
         }
         [Test]
-        public void GetThreshold_ReturnsInitializedThreshold_ReturnsInitializedThreshold()
+        public void GetHeaterThreshold_ReturnsInitializedHeaterThreshold_ReturnsInitializedHeaterThreshold()
         {
-            Assert.That(_ecs.GetThreshold(), Is.EqualTo(InitializeThreshold));
+            Assert.That(_ecs.GetHeaterThreshold(), Is.EqualTo(InitializeHeaterThreshold));
         }
         [Test]
-        public void SetThreshold_SetNewThreshold_GetThresholdReturnsNewThreshold()
+        public void SetHeaterThreshold_SetNewHeaterThreshold_GetThresholdReturnsNewHeaterThreshold()
         {
             int newThreshold = 20;
-            _ecs.SetThreshold(newThreshold);
-            Assert.That(_ecs.GetThreshold(), Is.EqualTo(newThreshold));
+            _ecs.SetHeaterThreshold(newThreshold);
+            Assert.That(_ecs.GetHeaterThreshold(), Is.EqualTo(newThreshold));
         }
 
         [Test]
-        public void Regulate_TemperatureBelowThreshold_HeaterIsTurnedOn()
+        public void GetWindowThreshold_ReturnsInitializedWindowThreshold_ReturnsInitializedWindowThreshold()
+        {
+            Assert.That(_ecs.GetWindowThreshold(), Is.EqualTo(InitializeWindowThreshold));
+        }
+        [Test]
+        public void SetWindowThreshold_SetNewWindowThreshold_GetThresholdReturnsNewWindowThreshold()
+        {
+            int newThreshold = 20;
+            _ecs.SetWindowThreshold(newThreshold);
+            Assert.That(_ecs.GetWindowThreshold(), Is.EqualTo(newThreshold));
+        }
+
+        [Test]
+        public void Regulate_TemperatureBelowHeaterThreshold_HeaterIsTurnedOn()
         {
             _ecs.Regulate();
             Assert.That(_fakeheater.IsOn, Is.True);
         }
 
         [Test]
-        public void Regulate_TemperatureAboveThreshold_HeaterIsTurnedOff()
+        public void Regulate_TemperatureAboveHeaterThreshold_HeaterIsTurnedOff()
         {
             _faketempSen.SetGetTempReturnVal(40);
             _ecs.Regulate();
@@ -55,10 +69,26 @@ namespace ECS.Legacy.Application.Test
         }
 
         [Test]
-        public void Regulate_TemperatureBelowThreshold_WindowIsClosed()
+        public void Regulate_TemperatureBelowWindowThreshold_WindowIsClosed()
         {
             _ecs.Regulate();
             Assert.That(_fakeWindow.IsOpen, Is.False);
+        }
+
+        [Test]
+        public void Regulate_TemperatureSameAsWindowThreshold_WindowIsClosed()
+        {
+            _faketempSen.SetGetTempReturnVal(35);
+            _ecs.Regulate();
+            Assert.That(_fakeWindow.IsOpen, Is.False);
+        }
+
+        [Test]
+        public void Regulate_TemperatureAboveWindowThreshold_WindowIsOpen()
+        {
+            _faketempSen.SetGetTempReturnVal(40);
+            _ecs.Regulate();
+            Assert.That(_fakeWindow.IsOpen, Is.True);
         }
     }
 }   
