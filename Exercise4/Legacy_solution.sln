@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.Legacy", "ECS.Legacy\EC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B5CABD59-540F-4FA8-B8A3-17B419172AE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.Legacy.Application", "ECS.Legacy.Application\ECS.Legacy.Application.csproj", "{F64113B8-31BF-4670-89B2-EAC2789F0D3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.Legacy.Application", "ECS.Legacy.Application\ECS.Legacy.Application.csproj", "{F64113B8-31BF-4670-89B2-EAC2789F0D3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.Legacy.Application.Test", "ECS.Legacy.Application.Test\ECS.Legacy.Application.Test.csproj", "{A27C2E63-1E4B-4C14-9073-CD3C75289EE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.Legacy.Application.Test", "ECS.Legacy.Application.Test\ECS.Legacy.Application.Test.csproj", "{A27C2E63-1E4B-4C14-9073-CD3C75289EE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
