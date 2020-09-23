@@ -1,5 +1,7 @@
 using NUnit.Framework;
 using DoorControl.Interface;
+using System.Threading;
+
 namespace DoorControlTest
 {
     public class Tests
@@ -31,7 +33,8 @@ namespace DoorControlTest
             Assert.That(_alarmFake.RaiseAlarmCalledCount, Is.EqualTo(1));
         }
 
-   
+       
+
         [Test]
         public void RequestEntry_RequestEntryWithValidId_DoorOpened()
         {
@@ -41,14 +44,34 @@ namespace DoorControlTest
 
         }
         [Test]
-        public void RequestEntry_RequestEntryWithInvalidId_DoorClosed()
+        public void RequestEntry_RequestEntryWithInvalidId_DoorIsNotOpened()
         {
             _userValidationFake.ValidateEntryRequestReturnValue = false; //Any id will be invalid
             _doorControl.RequestEntry(-100);
+            Assert.That(_doorFake.OpenCalledCount, Is.EqualTo(0));
+
+        }
+
+
+
+        [Test]
+        public void RequestEntry_EntryGrantedScenario_CorrectAmountOfCalls()
+        {
+            //Request access
+            _userValidationFake.ValidateEntryRequestReturnValue = true; //Any id will be valid
+            _doorControl.RequestEntry(100);
+
+            //Wait some amount of time
+            Thread.Sleep(1);
+
+            //Simulate door closing
+            _doorFake.Close();
+            _doorControl.DoorClosed();
+
             Assert.That(_doorFake.CloseCalledCount, Is.EqualTo(1));
 
         }
-        
+
         [Test]
         public void RequestEntry_RequestEntryWithValidId_NotifyEntryGrantedIsCalled()
         {
