@@ -10,6 +10,7 @@ namespace DoorControl
         DoorOpened,
         DoorBreached,
         Validating,
+        Validated,
     }
 
 
@@ -43,12 +44,12 @@ namespace DoorControl
         {
             switch (_controlState)
             {
-                case DoorControlState.DoorClosed:
+                case DoorControlState.Validated:
+                    _controlState = DoorControlState.DoorOpened;
+                    break;
+                default:
                     _controlState = DoorControlState.DoorBreached;
                     _alarm.RaiseAlarm();
-                    break;
-                case DoorControlState.Validating:
-                    _controlState = DoorControlState.DoorOpened;
                     break;
 
             }
@@ -58,10 +59,13 @@ namespace DoorControl
         {
             switch (_controlState)
             {
-                case DoorControlState.DoorOpened:
+                case DoorControlState.Validating:
                     _controlState = DoorControlState.DoorClosed;
                     break;
-                case DoorControlState.Validating:
+                case DoorControlState.Validated:
+                    _controlState = DoorControlState.DoorClosed;
+                    break;
+                case DoorControlState.DoorOpened:
                     _controlState = DoorControlState.DoorClosed;
                     break;
 
@@ -78,16 +82,14 @@ namespace DoorControl
                     bool isValidId = _userValidation.ValidateEntryRequest(id);
                     if (isValidId)
                     {
+                        _controlState = DoorControlState.Validated;
                         _entryNotification.NotifyEntryGranted();
                         _door.Open();
-                        DoorOpen();
                     }
                     else
                     {
+                        _controlState = DoorControlState.DoorClosed;
                         _entryNotification.NotifyEntryDenied();
-                        _door.Close();
-                        DoorClosed();
-
                     }
                     break;
 
