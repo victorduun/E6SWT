@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using DoorControl.Interface;
 using System.Threading;
+using NSubstitute;
 
 namespace DoorControlTestNSubstitute
 {
@@ -19,10 +20,10 @@ namespace DoorControlTestNSubstitute
         [SetUp]
         public void Setup()
         {
-            _alarmFake = new AlarmFake();
-            _doorFake = new DoorFake();
-            _entryNotificationFake = new EntryNotificationFake();
-            _userValidationFake = new UserValidationFake();
+            _alarmFake = Substitute.For<IAlarm>();
+            _doorFake = Substitute.For<IDoor>();
+            _entryNotificationFake = Substitute.For<IEntryNotification>();
+            _userValidationFake = Substitute.For<IUserValidation>();
             _doorControl = new DoorControl.DoorControl(_alarmFake, _doorFake, _entryNotificationFake, _userValidationFake);
         }
 
@@ -30,7 +31,7 @@ namespace DoorControlTestNSubstitute
         public void DoorOpen_OpenedWithoutValidation_AlarmRaised()
         {
             _doorControl.DoorOpen();
-            Assert.That(_alarmFake.RaiseAlarmCalledCount, Is.EqualTo(1));
+            _alarmFake.Received(1).RaiseAlarm();
         }
 
 
@@ -38,17 +39,17 @@ namespace DoorControlTestNSubstitute
         [Test]
         public void RequestEntry_RequestEntryWithValidId_DoorOpened()
         {
-            _userValidationFake.ValidateEntryRequestReturnValue = true; //Any id will be valid
+            _userValidationFake.ValidateEntryRequest(100).Returns(true);
             _doorControl.RequestEntry(100);
-            Assert.That(_doorFake.OpenCalledCount, Is.EqualTo(1));
+            _doorFake.Received(1).Open();
 
         }
         [Test]
         public void RequestEntry_RequestEntryWithInvalidId_DoorIsNotOpened()
         {
-            _userValidationFake.ValidateEntryRequestReturnValue = false; //Any id will be invalid
+            _userValidationFake.ValidateEntryRequest(-100).Returns(false);
             _doorControl.RequestEntry(-100);
-            Assert.That(_doorFake.OpenCalledCount, Is.EqualTo(0));
+            _doorFake.Received(0).Open();
 
         }
 
@@ -58,7 +59,7 @@ namespace DoorControlTestNSubstitute
         public void RequestEntry_EntryGrantedScenario_CorrectAmountOfCalls()
         {
             //Request access
-            _userValidationFake.ValidateEntryRequestReturnValue = true; //Any id will be valid
+            _userValidationFake.ValidateEntryRequest(100).Returns(true);
             _doorControl.RequestEntry(100);
 
             //Wait some amount of time
@@ -68,24 +69,24 @@ namespace DoorControlTestNSubstitute
             _doorFake.Close();
             _doorControl.DoorClosed();
 
-            Assert.That(_doorFake.CloseCalledCount, Is.EqualTo(1));
+            _doorFake.Received(1).Close();
 
         }
 
         [Test]
         public void RequestEntry_RequestEntryWithValidId_NotifyEntryGrantedIsCalled()
         {
-            _userValidationFake.ValidateEntryRequestReturnValue = true; //Any id will be valid
+            _userValidationFake.ValidateEntryRequest(100).Returns(true);
             _doorControl.RequestEntry(100);
-            Assert.That(_entryNotificationFake.NotifyEntryGrantedCalledCount, Is.EqualTo(1));
+            _entryNotificationFake.Received(1).NotifyEntryGranted();
         }
 
         [Test]
         public void RequestEntry_RequestEntryWithValidId_NotifyEntryDeniedIsCalled()
         {
-            _userValidationFake.ValidateEntryRequestReturnValue = false; //Any id will be invalid
+            _userValidationFake.ValidateEntryRequest(-100).Returns(false); 
             _doorControl.RequestEntry(-100);
-            Assert.That(_entryNotificationFake.NotifyEntryDeniedCalledCount, Is.EqualTo(1));
+            _entryNotificationFake.Received(1).NotifyEntryDenied();
         }
     }
 }
