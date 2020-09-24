@@ -3,30 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoorControl", "DoorControl\DoorControl.csproj", "{C4775375-8773-41BC-980E-7A2AC79186FE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoorControlTest", "DoorControlTest\DoorControlTest.csproj", "{8537F07E-E2E8-4368-8E73-C9AB81DF162A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoorControlTestNSubstitute", "DoorControlTestNSubstitute\DoorControlTestNSubstitute.csproj", "{7391F94F-6C74-4DB7-B1CA-A55E89A464C2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C4775375-8773-41BC-980E-7A2AC79186FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4775375-8773-41BC-980E-7A2AC79186FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4775375-8773-41BC-980E-7A2AC79186FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4775375-8773-41BC-980E-7A2AC79186FE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8537F07E-E2E8-4368-8E73-C9AB81DF162A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8537F07E-E2E8-4368-8E73-C9AB81DF162A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8537F07E-E2E8-4368-8E73-C9AB81DF162A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8537F07E-E2E8-4368-8E73-C9AB81DF162A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7391F94F-6C74-4DB7-B1CA-A55E89A464C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7391F94F-6C74-4DB7-B1CA-A55E89A464C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7391F94F-6C74-4DB7-B1CA-A55E89A464C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7391F94F-6C74-4DB7-B1CA-A55E89A464C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
