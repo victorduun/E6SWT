@@ -102,6 +102,14 @@ namespace Calculator.Test.Unit
             Assert.That(_calculator.Subtract(10000, 10001), Is.EqualTo(-1));
         }
 
+        [Test]
+        public void Subtract_UsingAccumulatorTest_ReturnsAccumulatorMinus10000()
+        {
+            double number = 10000;
+            double returnVal = _calculator.Accumulator - number;
+            Assert.That(_calculator.Subtract(number), Is.EqualTo(returnVal));
+        }
+
         /* Test cases for Multiply */
 
 
@@ -123,6 +131,13 @@ namespace Calculator.Test.Unit
             Assert.That(_calculator.Multiply(10, -10), Is.EqualTo(-100));
         }
 
+        [Test]
+        public void Multiply_10TimesAccumulator_ReturnsAccumulatorTimes10()
+        {
+            double number = 10;
+            double returnVal = _calculator.Accumulator * number;
+            Assert.That(_calculator.Multiply(number), Is.EqualTo(returnVal));
+        }
 
         /* Test cases for Power */
 
@@ -145,6 +160,28 @@ namespace Calculator.Test.Unit
             Assert.That(_calculator.Power(-2, 5), Is.EqualTo(-32));
         }
 
+        [Test]
+        public void Power_PowerOfAccumulatorBy4_ReturnsPowerOfAccumulatorBy4()
+        {
+            double number = 4;
+            double returnVal = Math.Pow(_calculator.Accumulator, number);
+            Assert.That(_calculator.Power(number), Is.EqualTo(returnVal));
+        }
+
+        [Test]
+        public void Power_PowerOfAccumulatorByMinus0Point5_ReturnsPowerOfAccumulatorByMinus0Point5()
+        {
+            double number = -0.5;
+            double returnVal = Math.Pow(_calculator.Accumulator, number);
+            Assert.That(_calculator.Power(number), Is.EqualTo(returnVal));
+        }
+
+        [Test]
+        public void Power_PowerOfAccumulatorBy0_Returns1()
+        {
+            Assert.That(_calculator.Power(0), Is.EqualTo(1));
+        }
+
 
 
         /* Test cases for Divide */
@@ -153,13 +190,21 @@ namespace Calculator.Test.Unit
         {
             Assert.Throws<ArgumentException>(() => _calculator.Divide(0));
         }
+
+        [Test]
+        public void Divide_DivisionWithAccumulator_ReturnsCorrectResult()
+        {
+            int number = 10;
+            Assert.That(_calculator.Divide(number), Is.EqualTo(_calculator.Accumulator/ number));
+        }
+
         [Test]
         public void Divide_DivisionBy0TwoParameters_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentException>(() => _calculator.Divide(10,0));
         }
         [Test]
-        public void Divide_DivisionByTwoParameters_ThrowsArgumentException()
+        public void Divide_10DividedBy10_Returns1()
         {
             Assert.That(_calculator.Divide(10, 10), Is.EqualTo(1));
         }

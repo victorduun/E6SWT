@@ -38,7 +38,7 @@ namespace Exercise6
             Accumulator -= subtractor;
             return Accumulator;
         }
-
+        
         public double Multiply(double a, double b)
         {
             Accumulator = a * b;
