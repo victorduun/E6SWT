@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ladeskab
+namespace Ladeskab.Application
 {
     class Program
     {
