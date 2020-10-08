@@ -6,27 +6,39 @@ using System.Text;
 
 namespace Ladeskab
 {
-    class ChargeControl : IChargeControl
+    public class ChargeControl : IChargeControl
     {
-        IUsbCharger _usbCharger;
+        private readonly IUsbCharger _usbCharger;
+
+        private bool _isConnected = false;
+
+        public ChargeControl(IUsbCharger usbCharger)
+        {
+            _usbCharger = usbCharger;
+        }
         public void ConnectDevice()
         {
-            throw new NotImplementedException();
+            _isConnected = true;
+        }
+
+        public void DisconnectDevice()
+        {
+            _isConnected = false;
         }
 
         public bool IsConnected()
         {
-            throw new NotImplementedException();
+            return _isConnected;
         }
 
         public void StartCharge()
         {
-            throw new NotImplementedException();
+            _usbCharger.StartCharge();
         }
 
         public void StopCharge()
         {
-            throw new NotImplementedException();
+            _usbCharger.StopCharge();
         }
     }
 }
