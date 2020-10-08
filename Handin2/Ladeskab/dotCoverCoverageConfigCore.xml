@@ -1,7 +1,7 @@
 <AnalyseParams>
 <TargetExecutable>C:\Program Files\dotnet\dotnet.exe</TargetExecutable>
 <TargetArguments>test --logger:nunit;LogFileName=TestResults.xml</TargetArguments>
-<TargetWorkingDir>Calculator.Test.Unit</TargetWorkingDir>
+<TargetWorkingDir>Ladeskab.Test</TargetWorkingDir>
 <TempDir>
 <!--  Directory for the auxiliary files. Set to system temp by default.  -->
 </TempDir>
