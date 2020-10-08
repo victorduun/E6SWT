@@ -18,6 +18,14 @@ namespace Ladeskab.Test
         }
 
         [Test]
+        public void DoorSimulator_CloseDoorWhenItsAlreadyClosed_DoorIsClosed()
+        {
+            _doorSimulator.Close();
+            _doorSimulator.Close();
+            Assert.That(_doorSimulator.DoorOpen, Is.False);
+        }
+
+        [Test]
         public void DoorSimulator_CloseDoor_DoorIsClosed()
         {
             _doorSimulator.Close();
