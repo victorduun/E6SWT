@@ -30,6 +30,8 @@ namespace Ladeskab
 
         public void Lock()
         {
+            if (DoorOpen)
+                return;
             DoorLocked = true;
         }
 
@@ -43,6 +45,8 @@ namespace Ladeskab
 
         public void Unlock()
         {
+            if (!DoorLocked)
+                return;
             DoorLocked = false;
         }
 
