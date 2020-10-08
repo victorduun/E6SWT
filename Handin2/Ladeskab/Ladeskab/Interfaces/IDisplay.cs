@@ -11,6 +11,11 @@ namespace Ladeskab.Interfaces
         void ShowLoadRfid();
         void ShowRemoveDevice();
         void ShowRfidError();
+        void ShowOvercurrentError();
+
+        void ShowChargingFinished();
+
+        void ShowChargingNominal();
 
 
     }

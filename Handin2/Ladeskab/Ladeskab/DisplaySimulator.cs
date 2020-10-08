@@ -43,5 +43,23 @@ namespace Ladeskab
             DisplayValue = "Forkert RFID tag";
             Console.WriteLine(DisplayValue);
         }
+
+        public void ShowOvercurrentError()
+        {
+            DisplayValue = "Der skete en fejl under opladningen. Opladningen blev afbrudt.";
+            Console.WriteLine(DisplayValue);
+        }
+
+        public void ShowChargingFinished()
+        {
+            DisplayValue = "Opladning afsluttet. Telefonen er fuldt opladt.";
+            Console.WriteLine(DisplayValue);
+        }
+
+        public void ShowChargingNominal()
+        {
+            DisplayValue = "Telefonen er i gang med at blive opladt.";
+            Console.WriteLine(DisplayValue);
+        }
     }
 }
