@@ -7,7 +7,8 @@ using Ladeskab;
 
 namespace Ladeskab.Test
 {
-    class DoorSimulatorTests
+    [TestFixture]
+    public class DoorSimulatorTests
     {
         DoorSimulator _doorSimulator;
 

@@ -6,7 +6,9 @@ using Ladeskab;
 
 namespace Ladeskab.Test
 {
-    public class Tests
+
+    [TestFixture]
+    public class DisplaySimulatorTests
     {
         DisplaySimulator _displaySimulator;
 

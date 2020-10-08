@@ -10,6 +10,7 @@ using NUnit.Framework;
 
 namespace Ladeskab.Test
 {
+    [TestFixture]
     public class StationControlTest
     {
 
