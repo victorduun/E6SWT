@@ -6,7 +6,5 @@ namespace Ladeskab.Interfaces
 {
     public interface IStationControl
     {
-        bool CheckId(int oldId, int Id);
-        void RfidDetected();
     }
 }
