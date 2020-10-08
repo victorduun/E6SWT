@@ -37,7 +37,7 @@ namespace Ladeskab
 
         public void Open()
         {
-            if (DoorOpen && !DoorLocked)
+            if (DoorOpen)
                 return;
             DoorOpen = true;
             RaiseDoorOpenEvent();
@@ -45,8 +45,6 @@ namespace Ladeskab
 
         public void Unlock()
         {
-            if (!DoorLocked)
-                return;
             DoorLocked = false;
         }
 
