@@ -18,16 +18,16 @@ namespace Ladeskab.Test
         }
 
         [Test]
-        public void DoorSimulator_CloseDoorWhenItsAlreadyClosed_DoorIsClosed()
+        public void DoorSimulator_CloseDoor_DoorIsClosed()
         {
-            _doorSimulator.Close();
             _doorSimulator.Close();
             Assert.That(_doorSimulator.DoorOpen, Is.False);
         }
 
         [Test]
-        public void DoorSimulator_CloseDoor_DoorIsClosed()
+        public void DoorSimulator_CloseDoorWhenItsAlreadyClosed_DoorIsClosed()
         {
+            _doorSimulator.Close();
             _doorSimulator.Close();
             Assert.That(_doorSimulator.DoorOpen, Is.False);
         }
@@ -41,11 +41,25 @@ namespace Ladeskab.Test
         }
 
         [Test]
-        public void DoorSimulator_LockDoorClosedDoor_DoorIsLocked()
+        public void DoorSimulator_OpenDoorWhenItsAlreadyOpen_DoorIsOpen()
+        {
+            _doorSimulator.Open();
+            Assert.That(_doorSimulator.DoorOpen, Is.True);
+        }
+
+        [Test]
+        public void DoorSimulator_LockDoorWithClosedDoor_DoorIsLocked()
         {
             _doorSimulator.Close();
             _doorSimulator.Lock();
             Assert.That(_doorSimulator.DoorLocked, Is.True);
+        }
+
+        [Test]
+        public void DoorSimulator_LockDoorWithOpenDoor_DoorIsUnlocked()
+        {
+            _doorSimulator.Lock();
+            Assert.That(_doorSimulator.DoorLocked, Is.False);
         }
 
         [Test]
