@@ -66,5 +66,13 @@ namespace Ladeskab.Test
             string correctString = "Forkert RFID tag";
             Assert.AreSame(correctString, _displaySimulator.DisplayValue);
         }
+
+        [Test]
+        public void DisplaySimulator_ShowOvercurrentError_DisplayValueIsCorrect()
+        {
+            _displaySimulator.ShowOvercurrentError();
+            string correctString = "Der skete en fejl under opladningen. Opladningen blev afbrudt.";
+            Assert.AreSame(correctString, _displaySimulator.DisplayValue);
+        }
     }
 }
