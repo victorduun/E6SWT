@@ -5,10 +5,10 @@ using Ladeskab.Interfaces;
 
 namespace Ladeskab
 {
-    class RfidReader : IRfidReader
+    public class RfidReader : IRfidReader
     {
         public event EventHandler<int> RfidDetectedEvent;
-        public void ReadRfidCard(int cardNumber)
+        public void OnRfidRead(int id)
         {
             throw new NotImplementedException();
         }

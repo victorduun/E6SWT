@@ -7,6 +7,6 @@ namespace Ladeskab.Interfaces
     public interface IRfidReader
     {
         event EventHandler<int> RfidDetectedEvent;
-        void ReadRfidCard(int cardNumber);
+        void OnRfidRead(int id);
     }
 }
