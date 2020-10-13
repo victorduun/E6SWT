@@ -1,5 +1,6 @@
 ﻿using System;
 using Ladeskab.Interfaces;
+using Ladeskab.USB;
 
 namespace Ladeskab.Application
 {
@@ -10,11 +11,16 @@ namespace Ladeskab.Application
             // Assemble your system here from all the classes
             IRfidReader rfidReader = new RfidReader();
             IDoor door = new DoorSimulator();
+            IUsbCharger usbCharger = new UsbChargerSimulator();
+            IDisplay display = new DisplaySimulator();
+            IChargeControl chargeControl = new ChargeControl(usbCharger, display);
+            IStationControl stationControl = new StationControl(chargeControl, door, display, rfidReader);
+
             bool finish = false;
             do
             {
                 string input;
-                System.Console.WriteLine("Indtast E, O, C, R: ");
+                System.Console.WriteLine("Indtast E, O, C, F, A, R: ");
                 input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input)) continue;
 
@@ -25,11 +31,19 @@ namespace Ladeskab.Application
                         break;
 
                     case 'O':
-                        //door.OnDoorOpen();
+                        door.Open();
                         break;
 
                     case 'C':
-                        //door.OnDoorClose();
+                        door.Close();
+                        break;
+
+                    case 'F':
+                        chargeControl.ConnectDevice();
+                        break;
+
+                    case 'A':
+                        chargeControl.DisconnectDevice();
                         break;
 
                     case 'R':

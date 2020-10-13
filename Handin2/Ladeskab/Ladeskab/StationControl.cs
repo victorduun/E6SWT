@@ -9,7 +9,7 @@ using Ladeskab.USB;
 
 namespace Ladeskab
 {
-    public class StationControl
+    public class StationControl : IStationControl
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
         private enum LadeskabState
@@ -20,7 +20,7 @@ namespace Ladeskab
         };
 
         private LadeskabState _state;
-        private readonly IUsbCharger _charger;
+        private readonly IChargeControl _chargeControl;
         private readonly IDoor _door;
         private readonly IDisplay _display;
         private readonly IRfidReader _rfidReader;
@@ -29,10 +29,11 @@ namespace Ladeskab
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
       
-        public StationControl(IUsbCharger usbCharger, IDoor door, IDisplay display, IRfidReader rfidReader)
+        public StationControl(IChargeControl chargeControl, IDoor door, IDisplay display, IRfidReader rfidReader)
         {
+            _state = LadeskabState.Available;
             //Set dependencies through DI
-            _charger = usbCharger;
+            _chargeControl = chargeControl;
             _door = door;
             _display = display;
             _rfidReader = rfidReader;
@@ -40,43 +41,32 @@ namespace Ladeskab
             //Set trigger handlers
             _rfidReader.RfidDetectedEvent += RfidDetected;
             _door.DoorOpenEvent += DoorOpened;
-            _door.DoorOpenEvent += DoorClosed;
-            _charger.CurrentValueEvent += CurrentValueChanged;
-
+            _door.DoorClosedEvent += DoorClosed;
+            
 
         }
 
-        private void CurrentValueChanged(object sender, CurrentEventArgs e)
-        {
-            if (e.Current == 0)
-            {
-                //Nothing
-            }
-            else if (0 < e.Current && e.Current <= 5)
-            {
-                _display.ShowChargingFinished();
-            }
-            else if (5 < e.Current && e.Current <= 500)
-            {
-                _display.ShowChargingNominal();
-            }
-            else if (e.Current > 500)
-            {
-                _display.ShowOvercurrentError();
-            }
-        }
+  
 
         private void DoorClosed(object sender, EventArgs e)
         {
-            //TODO: Set correct state
-            _display.ShowLoadRfid();
+            if (_state == LadeskabState.DoorOpen)
+            {
+                _state = LadeskabState.Available;
+                _display.ShowLoadRfid();
+            }
+
         }
 
 
         private void DoorOpened(object sender, EventArgs e)
         {
-            _state = LadeskabState.DoorOpen;
-            _display.ShowConnectDevice();
+            if (_state == LadeskabState.Available)
+            {
+                _state = LadeskabState.DoorOpen;
+                _display.ShowConnectDevice();
+            }
+                
         }
 
 
@@ -88,10 +78,16 @@ namespace Ladeskab
             {
                 case LadeskabState.Available:
                     // Check for ladeforbindelse
-                    if (_charger.Connected)
+                    if (!_chargeControl.IsConnected())
                     {
-                        _door.Lock();
-                        _charger.StartCharge();
+                        _display.ShowConnectionError();
+                    }
+                    
+                    _door.Lock();
+                    try
+                    {
+                        _chargeControl.StartCharge();
+
                         _oldId = id;
                         using (var writer = File.AppendText(logFile))
                         {
@@ -101,9 +97,8 @@ namespace Ladeskab
                         _display.ShowChargingLockerOccupied();
                         _state = LadeskabState.Locked;
                     }
-                    else
+                    catch (NotConnectedException ex)
                     {
-                        _display.ShowConnectionError();
                     }
 
                     break;
@@ -114,9 +109,11 @@ namespace Ladeskab
 
                 case LadeskabState.Locked:
                     // Check for correct ID
-                    if (id == _oldId)
+                    bool idIsOk = CheckId(_oldId, id);
+
+                    if (idIsOk)
                     {
-                        _charger.StopCharge();
+                        _chargeControl.StopCharge();
                         _door.Unlock();
                         using (var writer = File.AppendText(logFile))
                         {
@@ -137,8 +134,7 @@ namespace Ladeskab
 
         private bool CheckId(int oldId, int id)
         {
-
-            throw new NotImplementedException();
+            return id == _oldId;
         }
         // Her mangler de andre trigger handlere
     }
