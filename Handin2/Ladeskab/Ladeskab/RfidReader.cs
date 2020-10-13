@@ -10,7 +10,8 @@ namespace Ladeskab
         public event EventHandler<int> RfidDetectedEvent;
         public void OnRfidRead(int id)
         {
-            throw new NotImplementedException();
+            if (RfidDetectedEvent != null)
+                RfidDetectedEvent(this, id);
         }
     }
 }
