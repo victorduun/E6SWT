@@ -17,7 +17,7 @@ namespace Ladeskab.USB
         double CurrentValue { get; }
 
         // Require connection status of the phone
-        bool Connected { get; }
+        bool Connected { get; set; }
 
         // Start charging
         void StartCharge();

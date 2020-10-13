@@ -9,21 +9,27 @@ namespace Ladeskab
     public class ChargeControl : IChargeControl
     {
         private readonly IUsbCharger _usbCharger;
+        private readonly IDisplay _display;
 
         private bool _isConnected = false;
 
-        public ChargeControl(IUsbCharger usbCharger)
+        public ChargeControl(IUsbCharger usbCharger, IDisplay display)
         {
             _usbCharger = usbCharger;
+            _display = display;
+
+            _usbCharger.CurrentValueEvent += CurrentValueChanged;
         }
         public void ConnectDevice()
         {
             _isConnected = true;
+            _usbCharger.Connected = true;
         }
 
         public void DisconnectDevice()
         {
             _isConnected = false;
+            _usbCharger.Connected = false;
         }
 
         public bool IsConnected()
@@ -33,12 +39,34 @@ namespace Ladeskab
 
         public void StartCharge()
         {
+            if (_isConnected == false)
+                throw new NotConnectedException();
             _usbCharger.StartCharge();
         }
 
         public void StopCharge()
         {
             _usbCharger.StopCharge();
+        }
+
+        private void CurrentValueChanged(object sender, CurrentEventArgs e)
+        {
+            if (e.Current == 0)
+            {
+                //Nothing
+            }
+            else if (0 < e.Current && e.Current <= 5)
+            {
+                _display.ShowChargingFinished();
+            }
+            else if (5 < e.Current && e.Current <= 500)
+            {
+                _display.ShowChargingNominal();
+            }
+            else if (e.Current > 500)
+            {
+                _display.ShowOvercurrentError();
+            }
         }
     }
 }

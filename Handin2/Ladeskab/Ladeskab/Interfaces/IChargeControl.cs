@@ -4,6 +4,11 @@ using System.Text;
 
 namespace Ladeskab.Interfaces
 {
+
+    public class NotConnectedException : Exception
+    {
+    }
+
     public interface IChargeControl
     {
         void ConnectDevice();

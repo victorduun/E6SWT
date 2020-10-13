@@ -9,14 +9,14 @@ namespace Ladeskab.USB
         private const double MaxCurrent = 500.0; // mA
         private const double FullyChargedCurrent = 2.5; // mA
         private const double OverloadCurrent = 750; // mA
-        private const int ChargeTimeMinutes = 20; // minutes
-        private const int CurrentTickInterval = 250; // ms
+        private const int ChargeTimeMinutes = 1; // minutes
+        private const int CurrentTickInterval = 1000; // ms
 
         public event EventHandler<CurrentEventArgs> CurrentValueEvent;
 
         public double CurrentValue { get; private set; }
 
-        public bool Connected { get; private set; }
+        public bool Connected { get; set; }
 
         private bool _overload;
         private bool _charging;
@@ -26,7 +26,7 @@ namespace Ladeskab.USB
         public UsbChargerSimulator()
         {
             CurrentValue = 0.0;
-            Connected = true;
+            Connected = false;
             _overload = false;
 
             _timer = new System.Timers.Timer();
