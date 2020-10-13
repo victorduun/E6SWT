@@ -30,14 +30,14 @@ namespace Ladeskab
 
         public void Lock()
         {
-            if (DoorOpen)
+            if (DoorOpen )
                 return;
             DoorLocked = true;
         }
 
         public void Open()
         {
-            if (DoorOpen)
+            if (DoorOpen || DoorLocked)
                 return;
             DoorOpen = true;
             RaiseDoorOpenEvent();

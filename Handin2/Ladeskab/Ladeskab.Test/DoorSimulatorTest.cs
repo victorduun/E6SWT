@@ -71,5 +71,14 @@ namespace Ladeskab.Test
             _doorSimulator.Unlock();
             Assert.That(_doorSimulator.DoorLocked, Is.False);
         }
+
+        [Test]
+        public void DoorSimulator_OpenDoorWhenItsLocked_DoorCantOpen()
+        {
+            _doorSimulator.Close();
+            _doorSimulator.Lock();
+            _doorSimulator.Open();
+            Assert.That(_doorSimulator.DoorOpen, Is.False);
+        }
     }
 }
