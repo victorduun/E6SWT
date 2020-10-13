@@ -16,7 +16,7 @@ namespace Ladeskab
 
         public DoorSimulator()
         {
-            DoorOpen = true;
+            DoorOpen = false;
             DoorLocked = false;
         }
 
