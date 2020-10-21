@@ -76,5 +76,22 @@ namespace Ladeskab.Test
             string correctString = "Der skete en fejl under opladningen. Opladningen blev afbrudt.";
             Assert.AreSame(correctString, _displaySimulator.DisplayValue);
         }
+
+        [Test]
+        public void DisplaySimulator_ShowChargingNominal_DisplayValueIsCorrect()
+        {
+            _displaySimulator.ShowChargingNominal();
+            string correctString = "Telefonen er i gang med at blive opladt.";
+            Assert.AreSame(correctString, _displaySimulator.DisplayValue);
+        }
+
+        [Test]
+        public void DisplaySimulator_ShowChargingFinished_DisplayValueIsCorrect()
+        {
+            _displaySimulator.ShowChargingFinished();
+            string correctString = "Opladning afsluttet. Telefonen er fuldt opladt.";
+            Assert.AreSame(correctString, _displaySimulator.DisplayValue);
+        }
+
     }
 }
