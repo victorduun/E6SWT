@@ -10,8 +10,7 @@ namespace Ladeskab
         public event EventHandler<int> RfidDetectedEvent;
         public void OnRfidRead(int id)
         {
-            if (RfidDetectedEvent != null)
-                RfidDetectedEvent(this, id);
+            RfidDetectedEvent?.Invoke(this, id);
         }
     }
 }
