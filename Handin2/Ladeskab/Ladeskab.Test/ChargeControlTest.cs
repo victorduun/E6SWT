@@ -137,5 +137,22 @@ namespace Ladeskab.Test
             Assert.That(calls.Count() == 0);
         }
 
+        [TestCase(500.1)]
+        [TestCase(10000)]
+        [TestCase(1000000)]
+        public void ChargeControl_CurrentValueChangedOver500_DisplayOverCurrentErrorCalled(double currentValue)
+        {
+            //Arrange
+            CurrentEventArgs currentEventArgs = new CurrentEventArgs()
+            {
+                Current = currentValue,
+            };
+            //Act?
+            _usbCharger.CurrentValueEvent += Raise.EventWith(currentEventArgs);
+
+            //Assert
+            _display.Received().ShowOvercurrentError();
+        }
+
     }
 }
