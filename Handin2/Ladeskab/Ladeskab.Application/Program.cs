@@ -13,8 +13,9 @@ namespace Ladeskab.Application
             IDoor door = new DoorSimulator();
             IUsbCharger usbCharger = new UsbChargerSimulator();
             IDisplay display = new DisplaySimulator();
+            ILog logger = new FileLogger();
             IChargeControl chargeControl = new ChargeControl(usbCharger, display);
-            IStationControl stationControl = new StationControl(chargeControl, door, display, rfidReader);
+            IStationControl stationControl = new StationControl(chargeControl, door, display, rfidReader, logger);
 
             bool finish = false;
             do

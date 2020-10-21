@@ -24,12 +24,12 @@ namespace Ladeskab
         private readonly IDoor _door;
         private readonly IDisplay _display;
         private readonly IRfidReader _rfidReader;
+        private readonly ILog _logger;
         private int _oldId;
 
-        private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
       
-        public StationControl(IChargeControl chargeControl, IDoor door, IDisplay display, IRfidReader rfidReader)
+        public StationControl(IChargeControl chargeControl, IDoor door, IDisplay display, IRfidReader rfidReader, ILog logger)
         {
             _state = LadeskabState.Available;
             //Set dependencies through DI
@@ -37,6 +37,7 @@ namespace Ladeskab
             _door = door;
             _display = display;
             _rfidReader = rfidReader;
+            _logger = logger;
 
             //Set trigger handlers
             _rfidReader.RfidDetectedEvent += RfidDetected;
@@ -82,25 +83,24 @@ namespace Ladeskab
                     {
                         _display.ShowConnectionError();
                     }
-                    
-                    _door.Lock();
-                    try
+                    else
                     {
-                        _chargeControl.StartCharge();
-
-                        _oldId = id;
-                        using (var writer = File.AppendText(logFile))
+                        try
                         {
-                            writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", id);
+                            _chargeControl.StartCharge();
+
+                            _door.Lock();
+                            _oldId = id;
+                            _logger.LogDoorLocked(id);
+
+                            _display.ShowChargingLockerOccupied();
+                            _state = LadeskabState.Locked;
                         }
-
-                        _display.ShowChargingLockerOccupied();
-                        _state = LadeskabState.Locked;
+                        catch (NotConnectedException ex)
+                        {
+                            _display.ShowConnectionError();
+                        }
                     }
-                    catch (NotConnectedException ex)
-                    {
-                    }
-
                     break;
 
                 case LadeskabState.DoorOpen:
@@ -115,10 +115,7 @@ namespace Ladeskab
                     {
                         _chargeControl.StopCharge();
                         _door.Unlock();
-                        using (var writer = File.AppendText(logFile))
-                        {
-                            writer.WriteLine(DateTime.Now + ": Skab låst op med RFID: {0}", id);
-                        }
+                        _logger.LogDoorUnlocked(id);
 
                         _display.ShowRemoveDevice();
                         _state = LadeskabState.Available;
