@@ -19,8 +19,9 @@ namespace Ladeskab.Test
         }
 
         [Test]
-        public void DoorSimulator_CloseDoor_DoorIsClosed()
+        public void DoorSimulator_CloseDoorWhenDoorIsOpen_DoorIsClosed()
         {
+            _doorSimulator.Open();
             _doorSimulator.Close();
             Assert.That(_doorSimulator.DoorOpen, Is.False);
         }
@@ -29,14 +30,12 @@ namespace Ladeskab.Test
         public void DoorSimulator_CloseDoorWhenItsAlreadyClosed_DoorIsClosed()
         {
             _doorSimulator.Close();
-            _doorSimulator.Close();
             Assert.That(_doorSimulator.DoorOpen, Is.False);
         }
 
         [Test]
         public void DoorSimulator_OpenDoor_DoorIsOpen()
         {
-            _doorSimulator.Close();
             _doorSimulator.Open();
             Assert.That(_doorSimulator.DoorOpen, Is.True);
         }
@@ -45,13 +44,13 @@ namespace Ladeskab.Test
         public void DoorSimulator_OpenDoorWhenItsAlreadyOpen_DoorIsOpen()
         {
             _doorSimulator.Open();
+            _doorSimulator.Open();
             Assert.That(_doorSimulator.DoorOpen, Is.True);
         }
 
         [Test]
         public void DoorSimulator_LockDoorWithClosedDoor_DoorIsLocked()
         {
-            _doorSimulator.Close();
             _doorSimulator.Lock();
             Assert.That(_doorSimulator.DoorLocked, Is.True);
         }
@@ -59,6 +58,7 @@ namespace Ladeskab.Test
         [Test]
         public void DoorSimulator_LockDoorWithOpenDoor_DoorIsUnlocked()
         {
+            _doorSimulator.Open();
             _doorSimulator.Lock();
             Assert.That(_doorSimulator.DoorLocked, Is.False);
         }
@@ -66,7 +66,6 @@ namespace Ladeskab.Test
         [Test]
         public void DoorSimulator_UnlockDoorClosedDoor_DoorIsUnlocked()
         {
-            _doorSimulator.Close();
             _doorSimulator.Lock();
             _doorSimulator.Unlock();
             Assert.That(_doorSimulator.DoorLocked, Is.False);
@@ -75,10 +74,10 @@ namespace Ladeskab.Test
         [Test]
         public void DoorSimulator_OpenDoorWhenItsLocked_DoorCantOpen()
         {
-            _doorSimulator.Close();
             _doorSimulator.Lock();
             _doorSimulator.Open();
             Assert.That(_doorSimulator.DoorOpen, Is.False);
         }
+
     }
 }
