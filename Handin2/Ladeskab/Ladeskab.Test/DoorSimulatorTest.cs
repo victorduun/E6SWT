@@ -79,5 +79,29 @@ namespace Ladeskab.Test
             Assert.That(_doorSimulator.DoorOpen, Is.False);
         }
 
+        [Test]
+        public void DoorSimulator_OpenDoor_DoorOpenEventWasCalled()
+        {
+            //Arrange
+            bool wasCalled = false;
+            _doorSimulator.DoorOpenEvent += (sender, args) => wasCalled = true;
+            //Act
+            _doorSimulator.Open();
+            //Assert
+            Assert.IsTrue(wasCalled);
+        }
+
+        [Test]
+        public void DoorSimulator_CloseDoor_DoorClosedEventWasCalled()
+        {
+            //Arrange
+            _doorSimulator.Open();
+            bool wasCalled = false;
+            _doorSimulator.DoorClosedEvent += (sender, args) => wasCalled = true;
+            //Act
+            _doorSimulator.Close();
+            //Assert
+            Assert.IsTrue(wasCalled);
+        }
     }
 }
