@@ -18,6 +18,7 @@ namespace Ladeskab
             _usbCharger = usbCharger;
             _display = display;
 
+            _usbCharger.Connected = false;
             _usbCharger.CurrentValueEvent += CurrentValueChanged;
         }
         public void ConnectDevice()
