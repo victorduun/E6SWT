@@ -15,6 +15,7 @@ namespace Ladeskab.Test
     {
 
         private StationControl _uut;
+        private IChargeControl _chargeControl;
         private IUsbCharger _usbController;
         private IDisplay _display;
         private IDoor _door;
@@ -23,12 +24,14 @@ namespace Ladeskab.Test
         [SetUp]
         public void Setup()
         {
+            _chargeControl = Substitute.For<IChargeControl>();
             _usbController = Substitute.For<IUsbCharger>();
             _display = Substitute.For<IDisplay>();
             _door = Substitute.For<IDoor>();
             _rfidReader = Substitute.For<IRfidReader>();
 
-            _uut = new StationControl(_usbController, _door, _display, _rfidReader);
+            //_uut = new StationControl(_usbController, _door, _display, _rfidReader);
+            _uut = new StationControl(_chargeControl, _door, _display, _rfidReader);
         }
 
 
