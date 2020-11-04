@@ -20,7 +20,7 @@ namespace Ladeskab.USB
 
         private bool _overload;
         private bool _charging;
-        private System.Timers.Timer _timer;
+        private readonly System.Timers.Timer _timer;
         private int _ticksSinceStart;
 
         public UsbChargerSimulator()
